@@ -2,8 +2,8 @@ import React from 'react'
 
 const aut = () => {
   return (
-    <div>autnjbvffffjfjfjdjjf</div>
+    <div>autnjbvjsdfkjfnsdkjfjdjjf</div>
   )
 }
 
-export default aut
+export default aut;
