@@ -2,7 +2,7 @@ import React from 'react'
 
 const aut = () => {
   return (
-    <div>aut</div>
+    <div>autnjbvffffjfjfjdjjf</div>
   )
 }
 
