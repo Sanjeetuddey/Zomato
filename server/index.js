@@ -1,18 +1,33 @@
 import dotenv from "dotenv";
 dotenv.config();
-
 import express from "express";
 import connectDB from "./src/config/db.js";
+import cors from "cors";
+import AuthRouter from "./src/routes/authRouter.js";
+import morgan from "morgan";
 
 const app = express();
 
-app.get("/",(req,res)=>{
-    res.json({ message :"server Connected"});
-})
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(express.json());
+app.use(morgan("dev"));
+
+app.use("/api/auth", AuthRouter);
+
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Server Connected and Working" });
+});
+
+app.use((err, req, res, next) => {
+  const errorMessage = err.message || "Internal Server Error";
+  const errorStatus = err.statusCode || 500;
+
+  res.status(errorStatus).json({ message: errorMessage });
+});
 
 const port = process.env.PORT || 5000;
 
-app.listen(port,async()=>{
-    console.log("server Started at",port);
-    connectDB();
+app.listen(port, () => {
+  console.log("Server Started at", port);
+  connectDB();
 });

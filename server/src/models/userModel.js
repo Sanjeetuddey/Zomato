@@ -1,3 +1,4 @@
+
 import mongoose from "mongoose";
 
 const userSchema = mongoose.Schema(
@@ -12,6 +13,10 @@ const userSchema = mongoose.Schema(
       unique: true,
     },
     password: {
+      type: String,
+      required: true,
+    },
+    photo: {
       type: String,
       required: true,
     },
