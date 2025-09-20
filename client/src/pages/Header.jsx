@@ -1,6 +1,7 @@
 import { Search, ShoppingCart } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 
 const themes = [
   "light",
@@ -9,8 +10,8 @@ const themes = [
   "corporate",
   "ghibli",
   "gourmet",
-  "Mintlify",
-  "Perplexity",
+  "mintlify",
+  "perplexity",
   "luxury",
   "pastel",
   "slack",
@@ -21,6 +22,9 @@ const themes = [
 ];
 
 const Header = () => {
+  const { user, isLogin } = useAuth();
+  const navigate = useNavigate();
+
   const [theme, setTheme] = useState(
     localStorage.getItem("BhojanTheme") || "light"
   );
@@ -35,6 +39,9 @@ const Header = () => {
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
 
+  console.log(user);
+  
+
   return (
     <header className="flex justify-between items-center px-6 py-4 bg-base-200 shadow-md">
       {/* Left - Logo */}
@@ -42,7 +49,7 @@ const Header = () => {
         <NavLink to="/">🍽️ Bhojan</NavLink>
       </div>
 
-      {/* Center - Nav + Search (hidden on small screens) */}
+      {/* Center - Nav + Search */}
       <div className="flex items-center gap-6 flex-1 justify-center max-md:hidden">
         <NavLink
           to="/"
@@ -66,24 +73,42 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Right - Cart, Login + Theme */}
+      {/* Right - Cart, User, Theme */}
       <div className="flex items-center gap-3">
+        {/* Cart */}
         <NavLink
           to="/cart"
-          className="p-2 rounded-lg text-base-content"
+          className="p-2 rounded-lg text-base-content hover:bg-base-300"
           aria-label="View Cart"
         >
           <ShoppingCart className="w-6 h-6 text-base-content" />
         </NavLink>
 
-        <NavLink
-          to="/login"
-          className={({ isActive }) =>
-            `btn btn-sm ${isActive ? "btn-primary" : "btn-accent"}`
-          }
-        >
-          Login
-        </NavLink>
+        {/* User / Login */}
+        {isLogin && user ? (
+          <div
+            className="flex gap-3 items-center cursor-pointer"
+            onClick={() => navigate("/dashboard")}
+          >
+            <div className="h-12 w-12 rounded-full border overflow-hidden">
+              <img
+                src={user.photo} // fallback
+                alt="userPicture"
+                className="h-full w-full rounded-full object-cover"
+              />
+            </div>
+            <span className="text-primary-content text-lg font-semibold">
+              {user.fullName?.split(" ")[0]}
+            </span>
+          </div>
+        ) : (
+          <button
+            className="btn btn-secondary"
+            onClick={() => navigate("/login")}
+          >
+            Login
+          </button>
+        )}
 
         {/* Theme Selector */}
         <select

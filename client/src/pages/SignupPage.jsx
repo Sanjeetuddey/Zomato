@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { motion } from "framer-motion";
 import api from "../config/api";
 import toast from "react-hot-toast";
+
 const SignupPage = () => {
   const [signupData, setSignupData] = useState({
     fullName: "",

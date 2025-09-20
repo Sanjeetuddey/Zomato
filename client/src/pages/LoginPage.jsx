@@ -4,8 +4,12 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import api from "../config/api";
 import toast from "react-hot-toast";
+import { useAuth } from "../context/AuthContext";
 
 const LoginPage = () => {
+  const { setUser, setIsLogin } = useAuth();
+
+
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -26,19 +30,17 @@ const LoginPage = () => {
 
     try {
       const res = await api.post("/auth/login", loginData);
-      toast.success(res.data.message)
-     
-
-      // if (response.data.token) {
-      //   sessionStorage.setItem("authToken", response.data.token);
-      // }
-
-      navigate("/");
-    } catch (err) {
-      
-      setError(toast.err.response?.data?.message || "Login failed");
-    } finally {
-      setLoading(false);
+      toast.success(res.data.message);
+      setUser(res.data.data);
+      setIsLogin(true);
+      sessionStorage.setItem("BhojanUser", JSON.stringify(res.data.data));
+      navigate("/dashboard");
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        error?.response?.status + " | " + error?.response?.data?.message ||
+          "Unknown Error From Server"
+      );
     }
   };
 
