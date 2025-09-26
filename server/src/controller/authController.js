@@ -1,31 +1,33 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
-import { genToken, genForgetPassToken } from "../utils/jsonWebTokens.js";
+import { genToken, genTokenFp } from "../utils/jsonWebToken.js";
 import OTP from "../models/OTPModel.js";
 import sendEmail from "../utils/sendEmail.js";
 
-export const Register = async (req, res, next) => {
+export const signup = async (req, res, next) => {
   try {
     const { fullName, email, password } = req.body;
 
     if (!fullName || !email || !password) {
       const error = new Error("All Feilds Required");
-      error.statusCode = 404;
+      error.statusCode = 401;
       return next(error);
     }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      const error = new Error("User Already Exists, Please Login");
+      const error = new Error("User already exists");
       error.statusCode = 409;
       return next(error);
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const photo = `https://placehold.co/600x400/EEE/31343C?font=poppins&text=${fullName.charAt(
-      0
-    )}`;
-    const newUser = await User.create({
+    const fullNameP = fullName?.charAt(0)?.toUpperCase() || "U";
+    console.log(fullNameP);
+
+    const photo = `https://placehold.co/600x400/EEE/31343C?font=poppins&text=${fullNameP}`;
+
+    const newUser = User.create({
       fullName,
       email,
       password: hashedPassword,
@@ -35,33 +37,30 @@ export const Register = async (req, res, next) => {
     res.status(200).json({
       message: `🙏 Namaste ${fullName}, Apke liye 56 bhog tyar hai 😊`,
     });
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    next(err);
   }
 };
 
-export const Login = async (req, res, next) => {
+export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
       const error = new Error("All Feilds Required");
-      error.statusCode = 404;
+      error.statusCode = 401;
       return next(error);
     }
 
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
-      const error = new Error("User Not Found, Please Register");
+      const error = new Error("User Not Found, Please Signup");
       error.statusCode = 404;
       return next(error);
     }
 
-    const isPasswordCorrect = await bcrypt.compare(
-      password,
-      existingUser.password
-    );
-    if (!isPasswordCorrect) {
+    const isMatch = await bcrypt.compare(password, existingUser.password);
+    if (!isMatch) {
       const error = new Error("Invalid Credentials");
       error.statusCode = 401;
       return next(error);
@@ -81,12 +80,12 @@ export const Login = async (req, res, next) => {
         photo: existingUser.photo,
       },
     });
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    next(err);
   }
 };
 
-export const Logout = (req, res, next) => {
+export const logOut = (req, res, next) => {
   try {
     console.log("Performimg Logout");
 
@@ -142,7 +141,7 @@ export const SendOTP = async (req, res, next) => {
 
     const isOTPSent = await OTP.findOne({ email });
     if (isOTPSent) {
-      await isOTPSent.deleteOne({ email });
+      await isOTPSent.delete();
     }
 
     const otp = Math.floor(Math.random() * 900000 + 100000);
@@ -174,8 +173,6 @@ export const SendOTP = async (req, res, next) => {
     const emailStatus = await sendEmail(email, "OTP for Verification", message);
 
     const hashOTP = await bcrypt.hash(otp.toString(), 10);
-    console.log("Hashed OTP:", hashOTP);
-
     await OTP.create({
       email,
       otp: hashOTP,
@@ -203,14 +200,14 @@ export const verifyOTP = async (req, res, next) => {
     }
 
     const isValid = await bcrypt.compare(otp.toString(), isOTPAvailable.otp);
-    console.log("OTP validation result:", isValid);
+
     if (!isValid) {
       const error = new Error("Invalid OTP. Try Again");
       error.statusCode = 401;
       return next(error);
     }
 
-    if (!genForgetPassToken(email, res)) {
+    if (!genTokenFp(email, res)) {
       const error = new Error("Unable to Complete the Process");
       error.statusCode = 403;
       return next(error);
@@ -231,12 +228,12 @@ export const ForgetPassword = async (req, res, next) => {
 
     const hashedPassword = await bcrypt.hash(newpassword, 10);
     currentUser.password = hashedPassword;
+
     await currentUser.save();
 
-    res.clearCookie("BhojanFP"); 
+    res.clearCookie("BhojanFp");
     res.status(200).json({ message: "Password Change Successful" });
   } catch (error) {
     next(error);
   }
 };
-

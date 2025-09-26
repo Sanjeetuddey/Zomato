@@ -31,9 +31,10 @@ export const Protect = async (req, res, next) => {
   }
 };
 
-export const ProtectFP = async (req, res, next) => {
+
+export const ProtectFp = async (req, res, next) => {
   try {
-    const token = req.cookies.BhojanFP;
+    const token =  req.cookies.BhojanFp;
 
     const decode = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
@@ -43,6 +44,7 @@ export const ProtectFP = async (req, res, next) => {
       error.statusCode = 401;
       throw error;
     }
+
     const verifiedUser = await User.findOne(decode.email);
 
     if (!verifiedUser) {

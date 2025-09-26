@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Menu, Home, Utensils, Heart, Wallet, Settings, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
 
-const FoodDashboard = () => {
+const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const menuItems = [
@@ -14,7 +14,8 @@ const FoodDashboard = () => {
   ];
 
   return (
-    <div className="flex min-h-screen bg-base-200">
+    <>
+        <div className="flex min-h-screen bg-base-200">
       {/* Sidebar */}
       <motion.aside
         animate={{ width: sidebarOpen ? 240 : 80 }}
@@ -42,6 +43,7 @@ const FoodDashboard = () => {
           {sidebarOpen && "Logout"}
         </button>
       </motion.aside>
+
 
       {/* Main Content */}
       <main className="flex-1 p-6">
@@ -163,7 +165,9 @@ const FoodDashboard = () => {
         </section>
       </main>
     </div>
-  );
+ 
+    </>
+ );
 };
 
-export default FoodDashboard;
+export default Dashboard;
