@@ -3,7 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 
 import { FaUserSlash, FaUserEdit } from "react-icons/fa";
 import { GoPasskeyFill } from "react-icons/go";
-import ResetPassword from "./modals/ResetPassword";
+import ResetPassword from "./Modals/ResetPassword";
 
 const Profile = () => {
   const { user } = useAuth();
