@@ -83,7 +83,7 @@ export const login = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+};        
 
 export const logOut = (req, res, next) => {
   try {
