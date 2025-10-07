@@ -1,4 +1,3 @@
-
 import cloudinary from "./src/config/cloudinary.js";
 import express from "express";
 import connectDB from "./src/config/db.js";
@@ -41,3 +40,4 @@ app.listen(port, async () => {
   console.error("Cloudinary Connection Error:", error);
 }
 });
+
