@@ -4,7 +4,7 @@ import Admin from "../models/adminModel.js";
 
 export const Protect = async (req, res, next) => {
   try {
-    const token = req.cookies.LoginKey;
+    const token = req.cookies.BhojanLoginKey ;
 
     const decode = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
@@ -66,7 +66,7 @@ export const ProtectFp = async (req, res, next) => {
 
 export const AdminProtect = async (req, res, next) => {
   try {
-    const token = req.cookies.LoginKey;
+    const token = req.cookies.BhojanLoginKey ;
 
     const decode = jwt.verify(token, process.env.JWT_SECRET_KEY);
 

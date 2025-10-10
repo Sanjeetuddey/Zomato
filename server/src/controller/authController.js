@@ -53,6 +53,11 @@ export const login = async (req, res, next) => {
     }
 
     const existingUser = await User.findOne({ email });
+    if (!existingUser?.isActive === "inactive") {
+      const error = new Error("Account Deactivated. Contact Support");
+      error.statusCode = 403;
+      return next(error);
+    }
     if (!existingUser) {
       const error = new Error("User Not Found, Please Signup");
       error.statusCode = 404;
@@ -78,12 +83,16 @@ export const login = async (req, res, next) => {
         fullName: existingUser.fullName,
         email: existingUser.email,
         photo: existingUser.photo,
+        gender: existingUser.gender,
+        phone: existingUser.phone,
+        dob: existingUser.dob,
+        foodType: existingUser.foodType,
       },
     });
   } catch (err) {
     next(err);
   }
-};        
+};
 
 export const logOut = (req, res, next) => {
   try {
@@ -233,6 +242,25 @@ export const ForgetPassword = async (req, res, next) => {
 
     res.clearCookie("BhojanFp");
     res.status(200).json({ message: "Password Change Successful" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateUser = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+    const { fullName, photo } = req.body;
+    if (!fullName || !photo) {
+      const error = new Error("All Fields Required");
+      error.statusCode = 404;
+      return next(error);
+    }
+    currentUser.fullName = fullName;
+
+    currentUser.photo = photo;
+    await currentUser.save();
+    res.status(200).json({ message: "Profile Updated Successfully" });
   } catch (error) {
     next(error);
   }

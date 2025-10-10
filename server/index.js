@@ -6,13 +6,15 @@ import AuthRouter from "./src/routes/authRouter.js";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import userRouter from "./src/routes/userRouter.js";
-import AdminRouter from "./src/routes/adminRouter.js";  
+import AdminRouter from "./src/routes/adminRouter.js";
+import PublicRouter from "./src/routes/publicRouter.js";  
 const app = express();
 app.use(cookieParser());
 
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(express.json());
 app.use(morgan("dev"));
+app.use("/public", PublicRouter);
 app.use("/admin", AdminRouter);
 app.use("/auth", AuthRouter);
 app.use("/user", userRouter);
@@ -40,4 +42,3 @@ app.listen(port, async () => {
   console.error("Cloudinary Connection Error:", error);
 }
 });
-

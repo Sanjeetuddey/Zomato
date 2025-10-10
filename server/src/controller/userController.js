@@ -1,17 +1,21 @@
+
 import cloudinary from "../config/cloudinary.js";
 
 export const Update = async (req, res, next) => {
   try {
     const { fullName, gender, phone, dob, foodType } = req.body;
-    if (!fullName || !gender || !phone || !dob || !foodType) {
+
+    if (!fullName || !phone || !dob || !foodType || !gender) {
       const error = new Error("All Fields are Required");
       error.statusCode = 404;
       return next(error);
     }
+
     console.log("Update Request Body:", req.body);
     const currentUser = req.user;
     console.log("Current User:", currentUser);
     const uploadedPicture = req.file || "";
+
     if (uploadedPicture) {
       // Upload to Cloudinary
       if (currentUser.PhotoPublicId) {
@@ -25,6 +29,7 @@ export const Update = async (req, res, next) => {
         height: 500,
         crop: "fill",
       });
+      console.log("hellow");
       if (result) {
         currentUser.photo = result.secure_url;
         currentUser.PhotoPublicId = result.public_id;
@@ -42,6 +47,7 @@ export const Update = async (req, res, next) => {
     currentUser.foodType = foodType;
 
     await currentUser.save();
+    console.log("Updated User:", currentUser);
 
     res.status(200).json({
       success: true,
@@ -54,9 +60,20 @@ export const Update = async (req, res, next) => {
         phone: currentUser.phone,
         dob: currentUser.dob,
         foodType: currentUser.foodType,
-        registrationType: currentUser.registrationType,
       },
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const Deactivate = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+    currentUser.status = "inactive";
+    await currentUser.save();
+    console.log("Deactivated User:", currentUser);
+    res.status(200).json({ message: "User Deactivated Successfully" });
   } catch (error) {
     next(error);
   }
