@@ -34,10 +34,14 @@ const AdminLogin = () => {
       navigate("/adminDashboard");
     } catch (error) {
       console.log(error);
-      toast.error(
-        error?.response?.status + " | " + error?.response?.data?.message ||
-          "Unknown Error From Server"
-      );
+      if (error?.response?.data?.message) {
+        toast.error(
+          (error?.response?.status ? error.response.status + " | " : "") +
+          error.response.data.message
+        );
+      } else {
+        toast.error("Unknown Error From Server");
+      }
     }
   };
 
