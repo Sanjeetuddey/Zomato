@@ -9,8 +9,8 @@ const adminSeeder = async () => {
   try {
     await connectDB();
     const adminData = {
-      fullName: "Aditya Patidar",
-      email: "adityapatidar25102002@gmail.com",
+      fullName: "Sanjeet Uddey",
+      email: "sanjeetuddey@gmail.com",
       password: await bcrypt.hash("SecureAdmin@123", 10),
     };
 
