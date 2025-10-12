@@ -330,10 +330,8 @@ const SignupPage = () => {
       toast.success(res.data.message);
       navigate("/login");
     } catch (err) {
-      console.log("Signup error:", err);
-      const message = err.response?.data?.message || "Unknown Error From Server";
-      setError(message);
-      toast.error(message);
+      toast.error(err?.response?.status +"|"+err?.response?.data?.message ||
+         "Unknown Error From Server");
     } finally {
       setLoading(false);
     }

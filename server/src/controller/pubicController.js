@@ -1,8 +1,5 @@
 import Resturant from "../models/resturantModel.js";
 
-
-
-
 export const GetAllResturants = async (req, res, next) => {
   try {
     const resturants = await Resturant.find().sort({ createdAt: -1 });

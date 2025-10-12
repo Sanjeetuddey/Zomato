@@ -7,7 +7,7 @@ import sendEmail from "../utils/sendEmail.js";
 export const signup = async (req, res, next) => {
   try {
     const { fullName, email, password } = req.body;
-
+console.log(req.body);
     if (!fullName || !email || !password) {
       const error = new Error("All Feilds Required");
       error.statusCode = 401;
@@ -33,6 +33,7 @@ export const signup = async (req, res, next) => {
       password: hashedPassword,
       photo,
     });
+    console.log(newUser);
 
     res.status(200).json({
       message: `🙏 Namaste ${fullName}, Apke liye 56 bhog tyar hai 😊`,
