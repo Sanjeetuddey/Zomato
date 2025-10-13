@@ -18,8 +18,7 @@ export const AdminLogin = async (req, res, next) => {
       error.statusCode = 404;
       return next(error);
     }
-    //ytftyftufyftf
-
+    
     const isVerified = await bcrypt.compare(password, admin.password);
     if (!isVerified) {
       const error = new Error("Invalid Password");

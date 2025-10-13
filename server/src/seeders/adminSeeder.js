@@ -5,6 +5,7 @@ import connectDB from "../config/db.js";
 import bcrypt from "bcrypt";
 import Admin from "../models/adminModel.js";
 
+//admin seeder to create a default admin user
 const adminSeeder = async () => {
   try {
     await connectDB();
@@ -13,6 +14,7 @@ const adminSeeder = async () => {
       email: "sanjeetuddey@gmail.com",
       password: await bcrypt.hash("SecureAdmin@123", 10),
     };
+    
 
     const existingAdmin = await Admin.findOne({ email: adminData.email });
     if (existingAdmin) {
