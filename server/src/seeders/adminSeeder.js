@@ -15,7 +15,7 @@ const adminSeeder = async () => {
       password: await bcrypt.hash("SecureAdmin@123", 10),
     };
     
-
+//existing admin check and deletion
     const existingAdmin = await Admin.findOne({ email: adminData.email });
     if (existingAdmin) {
       await Admin.findOneAndDelete({ email: adminData.email });
