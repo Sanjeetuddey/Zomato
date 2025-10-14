@@ -4,6 +4,7 @@ import { genToken } from "../utils/jsonWebToken.js";
 import cloudinary from "../config/cloudinary.js";
 import Resturant from "../models/resturantModel.js";
 
+// Admin Login
 export const AdminLogin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
