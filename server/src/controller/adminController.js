@@ -13,6 +13,8 @@ export const AdminLogin = async (req, res, next) => {
       error.statusCode = 400;
       return next(error);
     }
+
+    //admin existence check
     const admin = await Admin.findOne({ email });
     if (!admin) {
       const error = new Error("Admin not found");
@@ -20,6 +22,7 @@ export const AdminLogin = async (req, res, next) => {
       return next(error);
     }
     
+    //password verification
     const isVerified = await bcrypt.compare(password, admin.password);
     if (!isVerified) {
       const error = new Error("Invalid Password");
@@ -27,6 +30,7 @@ export const AdminLogin = async (req, res, next) => {
       return next(error);
     }
 
+//token generation
     if (!genToken(admin._id, res)) {
       const error = new Error("Unable to Login");
       error.statusCode = 403;
@@ -47,6 +51,7 @@ export const AdminLogin = async (req, res, next) => {
   }
 };
 
+// Add Resturant
 export const AddResturant = async (req, res, next) => {
   try {
     const {
