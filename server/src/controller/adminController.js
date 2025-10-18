@@ -131,6 +131,7 @@ export const AddResturant = async (req, res, next) => {
       error.statusCode = 500;
       return next(error);
     }
+    // Define managerImage object
     const managerImage = {
       imageLink: M_result.secure_url,
       imageId: M_result.public_id,
