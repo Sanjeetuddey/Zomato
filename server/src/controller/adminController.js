@@ -197,7 +197,7 @@ export const AddResturant = async (req, res, next) => {
   }
 };
 
-
+// Get All Resturants
 export const GetAllResturants = async (req, res, next) => {
   try {
     const resturants = await Resturant.find().sort({ createdAt: -1 });
