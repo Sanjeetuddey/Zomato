@@ -201,7 +201,6 @@ export const AddResturant = async (req, res, next) => {
 export const GetAllResturants = async (req, res, next) => {
   try {
     const resturants = await Resturant.find().sort({ createdAt: -1 });
-
     if (!resturants || resturants.length === 0) {
       const error = new Error("No Resturants Found");
       error.statusCode = 404;
