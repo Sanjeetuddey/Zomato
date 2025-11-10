@@ -30,7 +30,7 @@ export const AdminLogin = async (req, res, next) => {
       return next(error);
     }
 
-//token generation
+      //token generation
     if (!genToken(admin._id, res)) {
       const error = new Error("Unable to Login");
       error.statusCode = 403;
@@ -50,6 +50,7 @@ export const AdminLogin = async (req, res, next) => {
     next(error);
   }
 };
+
 
 // Add Resturant
 export const AddResturant = async (req, res, next) => {
@@ -106,6 +107,7 @@ export const AddResturant = async (req, res, next) => {
       return next(error);
     }
 
+
     // console.log("managerImageFiles:", req.files.managerImage);
     // console.log("restaurantImageFiles:", req.files.restaurantImages);
 
@@ -116,6 +118,7 @@ export const AddResturant = async (req, res, next) => {
       error.statusCode = 404;
       return next(error);
     }
+
 
     // Upload Manager Image to Cloudinary
     const M_b64 = Buffer.from(managerImageFile[0].buffer).toString("base64");
@@ -131,6 +134,7 @@ export const AddResturant = async (req, res, next) => {
       error.statusCode = 500;
       return next(error);
     }
+
     // Define managerImage object
     const managerImage = {
       imageLink: M_result.secure_url,
@@ -138,6 +142,7 @@ export const AddResturant = async (req, res, next) => {
     };
 
     const restaurantImages = [];
+
     // Upload Restaurant Images to Cloudinary
     restaurantImageFiles.forEach(async (image) => {
       const R_b64 = Buffer.from(image.buffer).toString("base64");
@@ -161,6 +166,7 @@ export const AddResturant = async (req, res, next) => {
         imageId: R_result.public_id,
       });
     });
+
 
     // Create new Resturant
     const newResturant = await Resturant.create({
@@ -196,6 +202,7 @@ export const AddResturant = async (req, res, next) => {
     next(error);
   }
 };
+
 
 // Get All Resturants
 export const GetAllResturants = async (req, res, next) => {
@@ -279,10 +286,12 @@ export const UpdateResturant = async (req, res, next) => {
     const managerImageFile = req.files?.managerImage;
     const restaurantImageFiles = req.files?.restaurantImages;
     if (managerImageFile) {
+
       // Delete old image from Cloudinary
       if (managerImage.imageId) {
         await cloudinary.uploader.destroy(managerImage.imageId);
       }
+
       // Upload new Manager Image to Cloudinary
       const M_b64 = Buffer.from(managerImageFile[0].buffer).toString("base64");
       const M_dataURI = `data:${managerImageFile[0].mimetype};base64,${M_b64}`;
@@ -303,8 +312,8 @@ export const UpdateResturant = async (req, res, next) => {
       };
     }
     if (restaurantImageFiles && restaurantImageFiles.length > 0) {
-      // Delete old images from Cloudinary
-      if (restaurantImages && restaurantImages.length > 0) {
+
+            if (restaurantImages && restaurantImages.length > 0) {
         for (const img of restaurantImages) {
           if (img.imageId) {
             await cloudinary.uploader.destroy(img.imageId);
@@ -312,6 +321,7 @@ export const UpdateResturant = async (req, res, next) => {
         }
       }
       restaurantImages = [];
+
       // Upload new Restaurant Images to Cloudinary
       for (const image of restaurantImageFiles) {
         const R_b64 = Buffer.from(image.buffer).toString("base64");
