@@ -312,7 +312,6 @@ export const UpdateResturant = async (req, res, next) => {
       };
     }
     if (restaurantImageFiles && restaurantImageFiles.length > 0) {
-// Delete old images from Cloudinary
             if (restaurantImages && restaurantImages.length > 0) {
         for (const img of restaurantImages) {
           if (img.imageId) {
