@@ -321,8 +321,7 @@ export const UpdateResturant = async (req, res, next) => {
       }
       restaurantImages = [];
 
-      // Upload new Restaurant Images to Cloudinary
-      for (const image of restaurantImageFiles) {
+            for (const image of restaurantImageFiles) {
         const R_b64 = Buffer.from(image.buffer).toString("base64");
         const R_dataURI = `data:${image.mimetype};base64,${R_b64}`;
         const R_result = await cloudinary.uploader.upload(R_dataURI, {
