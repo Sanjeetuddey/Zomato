@@ -14,7 +14,7 @@ export const AdminLogin = async (req, res, next) => {
       return next(error);
     }
 
-    //admin existence check
+    
     const admin = await Admin.findOne({ email });
     if (!admin) {
       const error = new Error("Admin not found");
