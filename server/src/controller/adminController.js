@@ -341,7 +341,7 @@ export const UpdateResturant = async (req, res, next) => {
         });
       }
     }
-    // Update Resturant
+    
     resturant.resturantName = resturantName;
     resturant.address = address;
     resturant.lat = lat;
