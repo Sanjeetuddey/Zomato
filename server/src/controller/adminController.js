@@ -13,6 +13,9 @@ export const AdminLogin = async (req, res, next) => {
       error.statusCode = 400;
       return next(error);
     }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+     const error = new Error("Invalid Email Format");
+      error.statusCode = 400;}
 
     
     const admin = await Admin.findOne({ email });
