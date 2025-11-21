@@ -33,7 +33,7 @@ export const AdminLogin = async (req, res, next) => {
       return next(error);
     }
 
-      //token generation
+     
     if (!genToken(admin._id, res)) {
       const error = new Error("Unable to Login");
       error.statusCode = 403;
