@@ -55,7 +55,6 @@ export const AdminLogin = async (req, res, next) => {
 };
 
 
-// Add Resturant
 export const AddResturant = async (req, res, next) => {
   try {
     const {
