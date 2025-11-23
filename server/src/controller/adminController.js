@@ -81,7 +81,7 @@ export const AddResturant = async (req, res, next) => {
       ifscCode,
     } = req.body;
 
-    
+
     if (
       !resturantName ||
       !address ||
@@ -111,8 +111,7 @@ export const AddResturant = async (req, res, next) => {
     }
 
 
-    // console.log("managerImageFiles:", req.files.managerImage);
-    // console.log("restaurantImageFiles:", req.files.restaurantImages);
+   
 
     const managerImageFile = req.files.managerImage;
     const restaurantImageFiles = req.files.restaurantImages;
