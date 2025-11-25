@@ -122,7 +122,7 @@ export const AddResturant = async (req, res, next) => {
     }
 
 
-    // Upload Manager Image to Cloudinary
+    
     const M_b64 = Buffer.from(managerImageFile[0].buffer).toString("base64");
     const M_dataURI = `data:${managerImageFile[0].mimetype};base64,${M_b64}`;
     const M_result = await cloudinary.uploader.upload(M_dataURI, {
